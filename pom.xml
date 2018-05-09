@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>io.bootique.modules.parent</groupId>
+        <artifactId>bootique-modules-parent</artifactId>
+        <version>0.8</version>
+    </parent>
+
+    <groupId>io.bootique.log4j2</groupId>
+    <artifactId>bootique-log4j2-parent</artifactId>
+    <version>0.25</version>
+    <packaging>pom</packaging>
+
+    <name>bootique-log4j2-parent: Parent of Log4j2 integration modules for Bootique</name>
+    <description>
+        Parent POM of Log4j2-related Bootique modules.
+    </description>
+
+    <properties>
+        <bootique-version>${project.version}</bootique-version>
+    </properties>
+
+    <modules>
+        <module>bootique-log4j2</module>
+    </modules>
+</project>
