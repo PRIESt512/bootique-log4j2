@@ -12,8 +12,6 @@ import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.config.Configurator;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
-import org.apache.logging.log4j.core.impl.ContextAnchor;
-import org.slf4j.ILoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import java.util.Collection;
@@ -46,13 +44,14 @@ public class Log4jContextFactory {
     }
 
     public Logger createRootLogger(ShutdownManager shutdownManager, Map<String, java.util.logging.Level> defaultLevels) {
+        rerouteJUL();
 
         LoggerContext ctx;
         if (!useLog4jConfig) {
             ConfigurationBuilder<BuiltConfiguration> builder = createLog4jBuilder();
-            Map<String, LoggerFactory> loggers = mergeLevels(defaultLevels);
+            Map<String, LoggerFactory> loggerFactoryMap = mergeLevels(defaultLevels);
 
-            configLog4jContext(builder, loggers);
+            configLog4jContext(builder, loggerFactoryMap);
             ctx = Configurator.initialize(builder.build());
 
         } else {
@@ -60,7 +59,6 @@ public class Log4jContextFactory {
         }
 
         shutdownManager.addShutdownHook(ctx::stop);
-        //rerouteJUL();
         return ctx.getRootLogger();
     }
 
@@ -71,6 +69,12 @@ public class Log4jContextFactory {
     protected void configLog4jContext(ConfigurationBuilder<BuiltConfiguration> builder, Map<String, LoggerFactory> loggers) {
         if (appenders.isEmpty()) {
             setAppenders(Collections.singletonList(new ConsoleAppenderFactory()));
+        }
+
+        if (debugLog4j) {
+            builder.setStatusLevel(Level.DEBUG);
+        } else {
+            builder.setStatusLevel(Level.INFO);
         }
 
         loggers.forEach((name, lf) -> builder.add(lf.createLogger(name, builder)));
@@ -100,12 +104,12 @@ public class Log4jContextFactory {
 
         Map<String, LoggerFactory> merged = new HashMap<>(loggers);
 
-        levels.forEach((name, level) -> {
+        levels.forEach((name, itemLevel) -> {
 
             LoggerFactory factory = loggers.get(name);
             if (factory == null) {
                 factory = new LoggerFactory();
-                factory.setLevel(mapJULLevel(level));
+                factory.setLevel(mapJULLevel(itemLevel));
 
                 merged.put(name, factory);
             }
@@ -153,7 +157,7 @@ public class Log4jContextFactory {
     /**
      * If true, all other log4j configuration present in YAML is ignored and
      * the user is expected to provide its own config file per
-     * <a href="???">Log4j2
+     * <a href="https://logging.apache.org/log4j/2.x/manual/configuration.html">Log4j2
      * documentation</a>.
      *
      * @param useLog4jConfig if true, all other log4j configuration present in YAML is
@@ -169,7 +173,7 @@ public class Log4jContextFactory {
     /**
      * Sets whether to debug Log4j2 startup and configuration loading.
      *
-     * @param debugLog4j if true, turns on tracing of Logback startup.
+     * @param debugLog4j if true, turns on tracing of Log4j startup.
      * @since 0.13
      */
     @BQConfigProperty("If true, Log4j configuration debugging information will be printed to console. Helps to deal" +
