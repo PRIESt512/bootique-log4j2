@@ -1,4 +1,4 @@
-package io.bootique.log4j2.appender;
+package io.bootique.log4j.appender;
 
 import org.apache.logging.log4j.core.appender.ConsoleAppender;
 

@@ -1,9 +1,10 @@
-package io.bootique.log4j2.appender;
+package io.bootique.log4j.appender;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
 import io.bootique.config.PolymorphicConfiguration;
+import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
 import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
@@ -35,5 +36,5 @@ public abstract class AppenderFactory implements PolymorphicConfiguration {
                 .addAttribute("pattern", logFormat);
     }
 
-    public abstract void createAppender(ConfigurationBuilder<BuiltConfiguration> builder, String defaultLogFormat);
+    public abstract AppenderComponentBuilder createAppender(ConfigurationBuilder<BuiltConfiguration> builder, String defaultLogFormat);
 }

@@ -1,4 +1,4 @@
-package io.bootique.log4j2;
+package io.bootique.log4j;
 
 public enum Log4jLevel {
 

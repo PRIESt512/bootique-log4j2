@@ -1,10 +1,8 @@
-package io.bootique.log4j2.appender;
+package io.bootique.log4j.appender;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.bootique.annotation.BQConfig;
 import io.bootique.annotation.BQConfigProperty;
-import org.apache.logging.log4j.core.Appender;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
 import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
 import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
 import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
@@ -39,13 +37,11 @@ public class ConsoleAppenderFactory extends AppenderFactory {
     }
 
     @Override
-    public void createAppender(ConfigurationBuilder<BuiltConfiguration> builder, String defaultLogFormat) {
+    public AppenderComponentBuilder createAppender(ConfigurationBuilder<BuiltConfiguration> builder, String defaultLogFormat) {
         AppenderComponentBuilder appenderBuilder = builder
                 .newAppender("Stdout", "CONSOLE")
-                .addAttribute("target", target);
+                .addAttribute("target", target.getLog4jkTarget());
 
-        appenderBuilder.add(createLayout(builder, defaultLogFormat));
-
-        builder.add(appenderBuilder);
+        return appenderBuilder.add(createLayout(builder, defaultLogFormat));
     }
 }

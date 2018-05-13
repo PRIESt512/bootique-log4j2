@@ -1,0 +1,10 @@
+log:
+  level: debug
+  appenders:
+    - target: stderr
+      logFormat: '%c{20}: %m%n'
+  loggers:
+    com.foo:
+      level: debug
+    com.example:
+      level: debug

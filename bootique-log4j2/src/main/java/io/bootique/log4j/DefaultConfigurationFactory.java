@@ -1,9 +1,8 @@
-package io.bootique.log4j2;
+package io.bootique.log4j;
 
-import io.bootique.log4j2.appender.ConsoleTarget;
+import io.bootique.log4j.appender.ConsoleTarget;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.LoggerContext;
-import org.apache.logging.log4j.core.appender.ConsoleAppender;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.ConfigurationFactory;
 import org.apache.logging.log4j.core.config.ConfigurationSource;
@@ -15,8 +14,8 @@ import org.apache.logging.log4j.core.config.plugins.Plugin;
 
 import java.net.URI;
 
-@Plugin(name = "DefaultConfigurationFactory", category = ConfigurationFactory.CATEGORY)
-@Order(50)
+//@Plugin(name = "DefaultConfigurationFactory", category = ConfigurationFactory.CATEGORY)
+//@Order(50)
 public class DefaultConfigurationFactory extends ConfigurationFactory {
 
     static Configuration createConfiguration(final String name, ConfigurationBuilder<BuiltConfiguration> builder) {
@@ -30,7 +29,7 @@ public class DefaultConfigurationFactory extends ConfigurationFactory {
                 addAttribute("pattern", "%-5p [%d{ISO8601,UTC}] %thread %c{20}: %m%n%rEx"));
 
         builder.add(appenderBuilder);
-        builder.add(builder.newLogger("io.bootique.log4j2.Start", Level.DEBUG).
+        builder.add(builder.newLogger("io.bootique.log4j.Start", Level.DEBUG).
                 add(builder.newAppenderRef("Stdout")).
                 addAttribute("additivity", false));
         builder.add(builder.newRootLogger(Level.ERROR).add(builder.newAppenderRef("Stdout")));

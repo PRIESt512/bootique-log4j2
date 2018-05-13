@@ -1,0 +1,2 @@
+io.bootique.log4j.appender.AppenderFactory
+io.bootique.log4j.appender.ConsoleAppenderFactory

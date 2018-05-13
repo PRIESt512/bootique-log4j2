@@ -1,4 +1,4 @@
-package io.bootique.log4j2;
+package io.bootique.log4j;
 
 import com.google.inject.Binder;
 import com.google.inject.Inject;
@@ -12,7 +12,6 @@ import org.apache.logging.log4j.core.Logger;
 
 import java.util.Map;
 import java.util.logging.Level;
-
 
 public class Log4jModule extends ConfigModule {
 
